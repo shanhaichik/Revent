@@ -82,7 +82,7 @@ Do not forget to set up Redis and add to redis.conf line:
   - e     Evicted events (events generated when a key is evicted for maxmemory)
   - A     Alias for g$lshzxe, so that the "AKE" string means all the events.
 
-It is also possible to use the. [view](адрес:http://redis.io/topics/notifications"view")
+It is also possible to use the. [view](http://redis.io/topics/notifications)
 
 ## Changelog
 #### 0.1
