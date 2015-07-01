@@ -84,10 +84,9 @@ Revent.prototype.on = function(channel, params) {
         _key = ['__keyevent@', '__keyspace@'][+!!params.length] + this.params.db + '__:' + channel;
 
     this.receiver.on('pmessage', function(pattern, _channel, message) {
-        console.log(pattern, _channel, message)
         if (pattern === _key) {
             this.log('debug',
-                'Received message:\n' + 'pattern: ' + pattern + '\n' + 'channel: ' + _channel + '\n' + 'message: ' + message);
+                'Received message:\n' + 'pattern: ' + pattern + '\n' + 'channel: ' + _channel + '\n' + 'message: ' + message+'\n');
 
             if (_events.length && !!~_events.indexOf(message)) {
                 _callback(message, _channel);
