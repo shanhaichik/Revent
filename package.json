@@ -1,5 +1,5 @@
 {
-  "name": "Revent",
+  "name": "reventjs",
   "version": "0.1.0",
   "description": "Mini pub/sub module for Redis and NodeJS",
   "main": "index.js",
