@@ -12,7 +12,7 @@ Note: You must explicitly install redis and log4js as a dependency.
 
 Subscribe
 ```js
-	var Revent = require('revent');
+	var Revent = require('reventjs');
 	var sub = Revent(config.redis);
 
 	sub
