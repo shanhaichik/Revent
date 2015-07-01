@@ -21,9 +21,7 @@
   },
   "homepage": "https://github.com/shanhaichik/Revent",
   "dependencies": {
-    "redis": "^0.12.1"
-  },
-  "devDependencies": {
+    "redis": "^0.12.1",
     "log4js": "^0.6.26"
   }
 }
