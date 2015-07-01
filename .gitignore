@@ -1,0 +1,7 @@
+# Runtime data
+pids
+*.pid
+*.seed
+
+node_modules
+.idea/

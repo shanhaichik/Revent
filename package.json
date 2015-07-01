@@ -1,0 +1,29 @@
+{
+  "name": "Revent",
+  "version": "0.1.0",
+  "description": "Mini pub/sub module for Redis and NodeJS",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shanhaichik/Revent.git"
+  },
+  "keywords": [
+    "redis",
+    "pub",
+    "sub",
+    "events",
+    "revent"
+  ],
+  "author": "Alexander Dukhovnyak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shanhaichik/Revent/issues"
+  },
+  "homepage": "https://github.com/shanhaichik/Revent",
+  "dependencies": {
+    "redis": "^0.12.1"
+  },
+  "devDependencies": {
+    "log4js": "^0.6.26"
+  }
+}
