@@ -4,7 +4,7 @@ Redis pub/sub module for NodeJS
 
 ## Install
 
-`npm i -S revent`
+`npm i -S reventjs`
 
 Note: You must explicitly install redis and log4js as a dependency.
 
