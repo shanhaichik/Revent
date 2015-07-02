@@ -8,25 +8,36 @@ Redis pub/sub module for NodeJS
 
 Note: You must explicitly install redis and log4js as a dependency.
 
-## Usage
+## Config
+```js
+{
+	host: '127.0.0.1',
+    port: 6379,
+    db: 0,
+    options: {// redis oprions},
+    logger: false
+}
+```
 
-Subscribe
+
+## Usage
+####Subscribe
 ```js
 	var Revent = require('reventjs');
 	var sub = Revent(config.redis);
 
 	sub
 		// Keyspace All 
-		.on('hello:*', ['all', function(data, channel) {
+		.on('hello:*', ['all', function(data, channel, pattern) {
 			console.log(data, channel,'all');
 		}])
 		// Keyspace keys
-		.on('hello:*',['expired','del', function(data, channel) {
+		.on('hello:*',['expired','del', function(data, channel, pattern) {
 			console.log(data, channel,'space');
 		}])
 		// Keyevents
 		// On Keyevents subscribe if no keys, only callback
-		.on('hello:*',[function(data, channel) {
+		.on('hello:*',[function(data, channel, pattern) {
 			console.log(data, channel,'event');
 		}]);
 
@@ -37,7 +48,8 @@ channel | keys / callback
 --------|----------------
 Сhannel name for subscribe | List of key events of interest and callback for them. If you need all the set key `all`. 
 
-Unsubscribe
+
+####Unsubscribe
 ```js
 	// space - Keyspace
 	// event - Keyevent
@@ -53,7 +65,7 @@ channel | event type / callback
 Сhannel name for unsubscribe | Event type `space/event` and callback for them.
 
 
-Publish
+####Publish
 ```js
 	// space - Keyspace
 	// event - Keyevent
@@ -64,6 +76,20 @@ Publish
 channel | message 
 --------|----------------------
 Сhannel name for unsubscribe | Publish message `{Object | String}`
+
+
+
+###Just in case
+To catch errors without server crashes, you can use:
+```js
+
+process.on('uncaughtException', function (err) {
+	console.error((new Date).toUTCString() + ' Exception:', err.message)
+	console.error(err.stack)
+});
+
+```
+
 
 ## Important
 Do not forget to set up Redis and add to redis.conf line:
@@ -85,6 +111,12 @@ Do not forget to set up Redis and add to redis.conf line:
 It is also possible to use the. [view](http://redis.io/topics/notifications)
 
 ## Changelog
+#### 0.1.2
+- Fix bug in Off method
+- Changed the process of signing. Removed resubscribe to Radis event
+- Add subscribe pattern in event callback
+- Change channel name in event callback (теперь передается имя, без паттерна)
+
 #### 0.1
 
 - Initial
