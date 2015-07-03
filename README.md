@@ -2,7 +2,7 @@
 ==========
 Redis pub/sub module for NodeJS
 
-## Dear friends, if you find any bugs or you will have suggestions, I'll tell you very much. And you plus one in karma;)
+## Dear friends, if you find any bugs or you will have suggestions, I'll tell you thanks very much. And you plus one in karma;)
 
 ## Install
 
@@ -16,7 +16,7 @@ Note: You must explicitly install redis and log4js as a dependency.
 	host: '127.0.0.1',
     port: 6379,
     db: 0,
-    options: {// redis oprions},
+    options: {// redis options},
     logger: false
 }
 ```
