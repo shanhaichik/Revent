@@ -2,6 +2,8 @@
 ==========
 Redis pub/sub module for NodeJS
 
+## Dear friends, if you find any bugs or you will have suggestions, I'll tell you very much. And you plus one in karma;)
+
 ## Install
 
 `npm i -S reventjs`
@@ -21,11 +23,12 @@ Note: You must explicitly install redis and log4js as a dependency.
 
 
 ## Usage
-####Subscribe
+### Subscribe
 ```js
-	var Revent = require('reventjs');
-	var sub = Revent(config.redis);
+var Revent = require('reventjs');
+var sub = Revent(config.redis);
 
+sub.ready(function() {
 	sub
 		// Keyspace All 
 		.on('hello:*', ['all', function(data, channel, pattern) {
@@ -40,6 +43,7 @@ Note: You must explicitly install redis and log4js as a dependency.
 		.on('hello:*',[function(data, channel, pattern) {
 			console.log(data, channel,'event');
 		}]);
+});
 
 ```
 
@@ -49,7 +53,7 @@ channel | keys / callback
 Сhannel name for subscribe | List of key events of interest and callback for them. If you need all the set key `all`. 
 
 
-####Unsubscribe
+### Unsubscribe
 ```js
 	// space - Keyspace
 	// event - Keyevent
@@ -65,9 +69,8 @@ channel | event type / callback
 Сhannel name for unsubscribe | Event type `space/event` and callback for them.
 
 
-####Publish
+### Publish
 ```js
-	// space - Keyspace
 	// event - Keyevent
 	sub.publish('hello:*',{name:'Peter'});
 ```
@@ -111,6 +114,12 @@ Do not forget to set up Redis and add to redis.conf line:
 It is also possible to use the. [view](http://redis.io/topics/notifications)
 
 ## Changelog
+#### 0.2
+- Added ready method
+- Fix bug then no subscribe 'all' event
+- Mini refactor
+- Added custom client support
+
 #### 0.1.2
 - Fix bug in Off method
 - Changed the process of signing. Removed resubscribe to Radis event
