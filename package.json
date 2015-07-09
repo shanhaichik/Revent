@@ -1,6 +1,6 @@
 {
   "name": "reventjs",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Mini pub/sub module for Redis and NodeJS",
   "main": "index.js",
   "repository": {
@@ -12,7 +12,8 @@
     "pub",
     "sub",
     "events",
-    "revent"
+    "revent",
+    "pubsub"
   ],
   "author": "Alexander Dukhovnyak",
   "license": "MIT",

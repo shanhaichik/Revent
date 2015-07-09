@@ -89,8 +89,7 @@ Revent.prototype.ready = function (func) {
         }
     } 
 }    
-
-/*
+ /*
     *  Message handler
     *
     * @method _message
@@ -119,7 +118,6 @@ Revent.prototype._message = function(pattern, channel, message) {
         });
     }
 };
-
 /**
  * Subscribe to a channel
  *
@@ -131,27 +129,38 @@ Revent.prototype.on = function(channel, params) {
     if (params === undefined || !Array.isArray(params)) {
         throw new Error('Wrong type argument callback.');
     }
+    var _this     = this,
+        _callback = params.pop(),
+        _events   = params,
+        _length   = _events.length,
+        _channels = channel.split(' ');
 
-    var _callback = params.pop(),
-        _events = params,
-        _key = ['__keyevent@', '__keyspace@'][+!!params.length] + this.params.db + '__:' + channel;
+        (_channels.length) 
+            ? _channels.forEach(subscribe)
+            : subscribe(_channels);
+    
+    function subscribe (channel) {
+        var _key = ['__keyevent@', '__keyspace@'][+!!_length] + _this.params.db + '__:' + channel;
 
-    if (!this.queue[_key]) {
-        this.queue[_key] = (_events.length) ? {} : [];
-    }
-    if (_events.length) {
-        _events.forEach(function(event) {
-            if (!this.queue[_key][event]) {
-                this.queue[_key][event] = []
-            }
-            this.queue[_key][event].push(_callback);
-        }.bind(this));
-    } else {
-        this.queue[_key].push(_callback);
-    }
+        if (!_this.queue[_key]) {
+            _this.queue[_key] = (_length) ? {} : [];
+        }
 
-    this.receiver.psubscribe(_key);
-    this.log('info', 'Subscribe channel:' + _key);
+        if (_length) {
+            _events.forEach(function(event) {
+                if (!_this.queue[_key][event]) {
+                    _this.queue[_key][event] = []
+                }
+                _this.queue[_key][event].push(_callback);
+            });
+        } else {
+            _this.queue[_key].push(_callback);
+        }
+
+        _this.receiver.psubscribe(_key);
+        _this.log('info', 'Subscribe channel:' + _key);
+    };
+
     return this;
 };
 
@@ -171,13 +180,25 @@ Revent.prototype.off = function(channel, params) {
         throw new Error('Not the right name for the event. Possible event / space');
     }
 
-    var _callback = params.pop(),
-        _key = ['__keyevent@', '__keyspace@'][+(params[0] === 'space')] + this.params.db + '__:' + channel;
+    var _this     = this,
+        _callback = params.pop(),
+        _channels = _channels.split(' ');
 
-    this.receiver.punsubscribe(_key, _callback);
-    delete this.queue[_key];
+    (_channels.length) 
+        ? _channels.forEach(unsubscribe) 
+        : unsubscribe(_channels);
 
-    this.log('info', 'Unsubscribe channel:' + _key);
+    function unsubscribe(channel) {
+        var _key = ['__keyevent@', '__keyspace@'][+(params[0] === 'space')] + _this.params.db + '__:' + channel;
+
+        if (_this.queue[_key]) {
+            _this.receiver.punsubscribe(_key, _callback);
+            delete _this.queue[_key];
+        }
+
+        this.log('info', 'Unsubscribe channel:' + _key);
+    }
+
     return this;
 };
 
@@ -218,5 +239,4 @@ Revent.prototype.end = function(argument) {
     this.receiver.end();
     this.publisher.end();
 };
-
 module.exports = Revent;

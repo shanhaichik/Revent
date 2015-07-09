@@ -31,7 +31,7 @@ var sub = Revent(config.redis);
 sub.ready(function() {
 	sub
 		// Keyspace All 
-		.on('hello:*', ['all', function(data, channel, pattern) {
+		.on('hello:* world:*', ['all', function(data, channel, pattern) {
 			console.log(data, channel,'all');
 		}])
 		// Keyspace keys
@@ -57,7 +57,7 @@ channel | keys / callback
 ```js
 	// space - Keyspace
 	// event - Keyevent
-	sub.off('hello:*',['space', function () {
+	sub.off('hello:* world:*',['space', function () {
 		console.log('unsubscribe hello:*');
 	}]);
 
@@ -114,6 +114,9 @@ Do not forget to set up Redis and add to redis.conf line:
 It is also possible to use the. [view](http://redis.io/topics/notifications)
 
 ## Changelog
+#### 0.2.1
+- Added the ability to subscribe to multiple channels and hang one callback
+
 #### 0.2
 - Added ready method
 - Fix bug then no subscribe 'all' event
