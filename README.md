@@ -1,23 +1,19 @@
 # Revent
-==========
-Redis pub/sub module for NodeJS
-
-## Dear friends, if you find any bugs or you will have suggestions, I'll tell you thanks very much. And you plus one in karma;)
+###Redis pub/sub module for NodeJS
 
 ## Install
 
-`npm i -S reventjs`
-
-Note: You must explicitly install redis and log4js as a dependency.
+`npm i reventjs`
 
 ## Config
 ```js
 {
-	host: '127.0.0.1',
-    port: 6379,
-    db: 0,
-    options: {// redis options},
-    logger: false
+  	host: /* Redis host */,
+    port: /* Redis port */,
+    db:   /* Redis DB connect */,
+    options: {/* Redis options */},
+		createClient: /* Redis client instance */,
+		messagePattern: /* Message pattern RexExp*/
 }
 ```
 
@@ -25,74 +21,69 @@ Note: You must explicitly install redis and log4js as a dependency.
 ## Usage
 ### Subscribe
 ```js
-var Revent = require('reventjs');
-var sub = Revent(config.redis);
+import Revent  from 'reventjs';
+var redis = Revent.create({/* config */});
 
-sub.ready(function() {
-	sub
-		// Keyspace All 
-		.on('hello:* world:*', ['all', function(data, channel, pattern) {
-			console.log(data, channel,'all');
-		}])
-		// Keyspace keys
-		.on('hello:*',['expired','del', function(data, channel, pattern) {
-			console.log(data, channel,'space');
-		}])
-		// Keyevents
-		// On Keyevents subscribe if no keys, only callback
-		.on('hello:*',[function(data, channel, pattern) {
-			console.log(data, channel,'event');
-		}]);
-});
+redis
+		.on('ready', () => {
 
+					redis.on('hello:*', ['expired','del' ,(data, channel, pattern) => {
+						console.log(data, channel, pattern);
+					}]);
+
+			}).on('error', (err) => {
+					console.error(`Redis client error: ${err}`);
+			});
+
+// OR
+redis.on('ready', () => {
+					console.log('Redis ready');
+			})
+			.on('error', (err) => {
+					console.error(`Redis client error: ${err}`);
+			});
+
+redis.on('hello:*', ['expired','del' ,(data, channel, pattern) => {
+	console.log(data, channel, pattern);
+}]);
 ```
-
-### Options
-channel | keys / callback 
---------|----------------
-Сhannel name for subscribe | List of key events of interest and callback for them. If you need all the set key `all`. 
-
 
 ### Unsubscribe
 ```js
 	// space - Keyspace
-	// event - Keyevent
-	sub.off('hello:* world:*',['space', function () {
+	redis.off('hello:* world:*',[() => {
 		console.log('unsubscribe hello:*');
+	}]);
+
+	// event - Keyevent
+	redis.off('events',[() => {
+		console.log('unsubscribe Events');
 	}]);
 
 ```
 
-### Options
-channel | event type / callback 
---------|----------------------
-Сhannel name for unsubscribe | Event type `space/event` and callback for them.
-
-
 ### Publish
 ```js
-	// event - Keyevent
-	sub.publish('hello:*',{name:'Peter'});
+	redis.send('hello:*', {name:'Peter'});
 ```
 
-### Options
-channel | message 
---------|----------------------
-Сhannel name for unsubscribe | Publish message `{Object | String}`
-
-
-
-###Just in case
-To catch errors without server crashes, you can use:
+### Connection close
 ```js
+	redis.close();
 
-process.on('uncaughtException', function (err) {
-	console.error((new Date).toUTCString() + ' Exception:', err.message)
-	console.error(err.stack)
-});
-
+	//Hard
+	redis.end();
 ```
 
+### Redis command
+```js
+	redis.command().expire(`hello:123`, 0, (err, reply) => {
+			if(err || !reply) {
+					console.error(err);
+			}
+
+	});
+```
 
 ## Important
 Do not forget to set up Redis and add to redis.conf line:
@@ -113,22 +104,4 @@ Do not forget to set up Redis and add to redis.conf line:
 
 It is also possible to use the. [view](http://redis.io/topics/notifications)
 
-## Changelog
-#### 0.2.1
-- Added the ability to subscribe to multiple channels and hang one callback
-
-#### 0.2
-- Added ready method
-- Fix bug then no subscribe 'all' event
-- Mini refactor
-- Added custom client support
-
-#### 0.1.2
-- Fix bug in Off method
-- Changed the process of signing. Removed resubscribe to Radis event
-- Add subscribe pattern in event callback
-- Change channel name in event callback (теперь передается имя, без паттерна)
-
-#### 0.1
-
-- Initial
+## Dear friends, if you find any bugs or you will have suggestions, I'll tell you thanks very much. And you plus one in karma;)

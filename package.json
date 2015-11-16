@@ -1,6 +1,6 @@
 {
   "name": "reventjs",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Mini pub/sub module for Redis and NodeJS",
   "main": "index.js",
   "repository": {
@@ -23,7 +23,6 @@
   "homepage": "https://github.com/shanhaichik/Revent",
   "dependencies": {
     "redis": "^0.12.1",
-    "log4js": "^0.6.26",
-    "extend": "^2.0.1"
+    "lodash": "^3.10.1"
   }
 }
