@@ -3,7 +3,7 @@
 
 ## Install
 
-`npm i reventjs`
+`npm i reventjs --save`
 
 ## Config
 ```js
@@ -22,7 +22,7 @@
 ### Subscribe
 ```js
 import Revent  from 'reventjs';
-var redis = Revent.create({/* config */});
+const redis = Revent.create({/* config */});
 
 redis
 		.on('ready', () => {
