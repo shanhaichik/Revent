@@ -1,6 +1,6 @@
 {
   "name": "reventjs",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Mini pub/sub module for Redis and NodeJS",
   "main": "index.js",
   "repository": {
